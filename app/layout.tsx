@@ -19,9 +19,9 @@ const fontMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "RelayProbe",
+  title: "RelayProbe | GPT-5.5 relay audit",
   description:
-    "Audit OpenAI-compatible API relays for observable tampering, injection, and canary leakage evidence.",
+    "Evidence-driven audit console for OpenAI-compatible relays, canaries, tool calls, and response poisoning.",
 }
 
 export default function RootLayout({
@@ -31,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="zh-CN"
       suppressHydrationWarning
       className={cn(
         "antialiased",
@@ -51,4 +51,3 @@ export default function RootLayout({
     </html>
   )
 }
-

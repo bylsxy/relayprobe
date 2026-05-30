@@ -29,7 +29,7 @@ export function SiteHeader() {
           </Badge>
           <Button variant="outline" size="sm" asChild>
             <a
-              href="https://github.com/"
+              href="https://github.com/bylsxy/relayprobe"
               target="_blank"
               rel="noreferrer noopener"
             >

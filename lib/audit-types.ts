@@ -6,6 +6,10 @@ export const TEST_PROFILE_KEYS = [
   "canaryLeak",
   "injectionLure",
   "crossRequest",
+  "responsePoisoning",
+  "toolIntegrity",
+  "wrapperBilling",
+  "identityProbe",
 ] as const
 
 export type TestProfileKey = (typeof TEST_PROFILE_KEYS)[number]
@@ -42,10 +46,44 @@ export interface AuditFinding {
     | "protocol"
     | "baseline"
     | "auditor"
+    | "response-poisoning"
+    | "tool-call"
+    | "billing"
+    | "identity"
   title: string
   evidence: string
   recommendation: string
   caseIds: string[]
+}
+
+export interface AuditSignal {
+  id: string
+  label: string
+  severity: Severity
+  evidence: string
+}
+
+export interface ToolCallSignal {
+  id?: string
+  name?: string
+  argumentsPreview?: string
+}
+
+export interface TokenUsageSignal {
+  promptTokens?: number
+  completionTokens?: number
+  totalTokens?: number
+  cachedTokens?: number
+  cacheReadInputTokens?: number
+  cacheCreationInputTokens?: number
+}
+
+export interface AuditCaseSignals {
+  responsePoisoning?: AuditSignal[]
+  toolCalls?: ToolCallSignal[]
+  usage?: TokenUsageSignal
+  usageAnomalies?: AuditSignal[]
+  identityHints?: AuditSignal[]
 }
 
 export interface AuditCaseResult {
@@ -58,6 +96,7 @@ export interface AuditCaseResult {
   baselinePreview?: string
   canaries: string[]
   observations: string[]
+  signals?: AuditCaseSignals
   httpStatus?: number
   error?: string
 }
@@ -84,6 +123,10 @@ export const defaultProfiles: TestProfiles = {
   canaryLeak: true,
   injectionLure: true,
   crossRequest: true,
+  responsePoisoning: true,
+  toolIntegrity: true,
+  wrapperBilling: true,
+  identityProbe: true,
 }
 
 export function severityRank(severity: Severity) {
@@ -103,4 +146,3 @@ export function severityLabel(score: number): Severity {
   if (score >= 15) return "low"
   return "info"
 }
-

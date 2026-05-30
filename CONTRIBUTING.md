@@ -9,6 +9,7 @@ RelayProbe needs conservative security language and reproducible tests.
 - Clear false-positive documentation
 - UI improvements that keep reports evidence-first
 - Tests for scoring and canary detection
+- Multilingual probe corpus additions with matching false-positive notes
 
 ## Guardrails
 
@@ -20,7 +21,7 @@ RelayProbe needs conservative security language and reproducible tests.
 
 ```bash
 npm run lint
+npm run test
 npm run typecheck
 npm run build
 ```
-

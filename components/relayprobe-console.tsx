@@ -96,6 +96,26 @@ const profileMeta: Array<{
     title: "Cross-request",
     description: "Isolation check.",
   },
+  {
+    key: "responsePoisoning",
+    title: "Poison scan",
+    description: "MITM payload markers.",
+  },
+  {
+    key: "toolIntegrity",
+    title: "Tool integrity",
+    description: "OpenAI tool_calls path.",
+  },
+  {
+    key: "wrapperBilling",
+    title: "Wrapper tokens",
+    description: "Hidden usage evidence.",
+  },
+  {
+    key: "identityProbe",
+    title: "Identity hints",
+    description: "Weak model routing signal.",
+  },
 ]
 
 export function RelayProbeConsole() {
@@ -213,7 +233,9 @@ export function RelayProbeConsole() {
         <Card>
           <CardHeader>
             <CardTitle>Audit configuration</CardTitle>
-            <CardDescription>OpenAI-compatible chat completions</CardDescription>
+            <CardDescription>
+              GPT-5.5 relay MITM evidence probes
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <FieldGroup>
@@ -259,9 +281,7 @@ export function RelayProbeConsole() {
                   <FieldLabel htmlFor="target-model">Target model</FieldLabel>
                   <Select
                     value={form.targetModel}
-                    onValueChange={(value) =>
-                      updateForm("targetModel", value)
-                    }
+                    onValueChange={(value) => updateForm("targetModel", value)}
                   >
                     <SelectTrigger id="target-model" className="w-full">
                       <SelectValue placeholder={DEFAULT_TARGET_MODEL} />
@@ -283,9 +303,7 @@ export function RelayProbeConsole() {
                   <FieldLabel htmlFor="auditor-model">Auditor model</FieldLabel>
                   <Select
                     value={form.auditorModel}
-                    onValueChange={(value) =>
-                      updateForm("auditorModel", value)
-                    }
+                    onValueChange={(value) => updateForm("auditorModel", value)}
                   >
                     <SelectTrigger id="auditor-model" className="w-full">
                       <SelectValue placeholder={DEFAULT_AUDITOR_MODEL} />
@@ -471,8 +489,7 @@ export function RelayProbeConsole() {
                   <TabsContent value="request">
                     <CodePanel
                       value={
-                        activeCase?.requestPreview ??
-                        "No request captured yet."
+                        activeCase?.requestPreview ?? "No request captured yet."
                       }
                     />
                   </TabsContent>
@@ -490,10 +507,12 @@ export function RelayProbeConsole() {
         <Card>
           <CardHeader>
             <CardTitle>Methodology</CardTitle>
-            <CardDescription>Baseline, canary, diff, evidence</CardDescription>
+            <CardDescription>
+              Canary, active lure, tool, usage, evidence
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 gap-3 @3xl/main:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 @3xl/main:grid-cols-3 @6xl/main:grid-cols-6">
               <MethodStep
                 icon={<FingerprintIcon />}
                 title="Canary"
@@ -514,6 +533,16 @@ export function RelayProbeConsole() {
                 title="Attribution"
                 body="Findings stay at observable evidence level."
               />
+              <MethodStep
+                icon={<TriangleAlertIcon />}
+                title="Poison"
+                body="Operator-facing payload markers are scanned."
+              />
+              <MethodStep
+                icon={<SearchCheckIcon />}
+                title="Tools"
+                body="Tool-call stripping and mutation are checked."
+              />
             </div>
           </CardContent>
         </Card>
@@ -523,7 +552,11 @@ export function RelayProbeConsole() {
             <CardTitle>Run output</CardTitle>
             <CardDescription>Portable JSON report</CardDescription>
             <CardAction className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => copyReport(report)}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => copyReport(report)}
+              >
                 <CopyIcon data-icon="inline-start" />
                 Copy
               </Button>
@@ -565,13 +598,18 @@ function MetricCard({
     <Card className="@container/card">
       <CardHeader>
         <CardDescription className="flex items-center gap-2">
-          {React.cloneElement(icon as React.ReactElement<{ className?: string }>, {
-            className: "text-muted-foreground",
-          })}
+          {React.cloneElement(
+            icon as React.ReactElement<{ className?: string }>,
+            {
+              className: "text-muted-foreground",
+            }
+          )}
           {title}
         </CardDescription>
         <CardTitle className="flex items-end gap-2 text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-          <span className={severityRank(severity) >= 4 ? "text-destructive" : ""}>
+          <span
+            className={severityRank(severity) >= 4 ? "text-destructive" : ""}
+          >
             {value}
           </span>
           <span className="pb-1 text-sm font-normal text-muted-foreground">
@@ -602,14 +640,12 @@ function FindingTable({ findings }: { findings: AuditFinding[] }) {
             >
               <SeverityBadge severity={finding.severity} />
               <div className="flex min-w-0 flex-col gap-1">
-                <span className="break-words font-medium">
-                  {finding.title}
-                </span>
-                <span className="break-words text-sm text-muted-foreground">
+                <span className="font-medium break-words">{finding.title}</span>
+                <span className="text-sm break-words text-muted-foreground">
                   {finding.evidence}
                 </span>
               </div>
-              <div className="text-right text-sm tabular-nums text-muted-foreground">
+              <div className="text-right text-sm text-muted-foreground tabular-nums">
                 {finding.confidence}%
               </div>
             </div>
@@ -629,13 +665,10 @@ function CaseMatrix({ report }: { report: AuditReport }) {
     <div className="overflow-hidden rounded-lg border">
       <div className="flex flex-col divide-y">
         {report.cases.map((item) => (
-          <div
-            key={item.id}
-            className="grid grid-cols-[1fr_auto] gap-3 p-3"
-          >
+          <div key={item.id} className="grid grid-cols-[1fr_auto] gap-3 p-3">
             <div className="flex min-w-0 flex-col gap-1">
-              <span className="break-words font-medium">{item.name}</span>
-              <span className="break-words text-xs text-muted-foreground">
+              <span className="font-medium break-words">{item.name}</span>
+              <span className="text-xs break-words text-muted-foreground">
                 {item.observations[0] ?? "No observation"}
               </span>
               <span className="text-xs text-muted-foreground">
@@ -685,7 +718,9 @@ function CodePanel({
   minHeight?: string
 }) {
   return (
-    <ScrollArea className={`${minHeight} max-h-96 rounded-lg border bg-muted/30`}>
+    <ScrollArea
+      className={`${minHeight} max-h-96 rounded-lg border bg-muted/30`}
+    >
       <pre className="p-3 font-mono text-xs leading-relaxed whitespace-pre-wrap">
         {value}
       </pre>
@@ -705,9 +740,12 @@ function MethodStep({
   return (
     <div className="flex min-h-28 flex-col gap-3 rounded-lg border p-3">
       <div className="flex items-center gap-2 font-medium">
-        {React.cloneElement(icon as React.ReactElement<{ className?: string }>, {
-          className: "text-muted-foreground",
-        })}
+        {React.cloneElement(
+          icon as React.ReactElement<{ className?: string }>,
+          {
+            className: "text-muted-foreground",
+          }
+        )}
         <span>{title}</span>
       </div>
       <p className="text-sm text-muted-foreground">{body}</p>

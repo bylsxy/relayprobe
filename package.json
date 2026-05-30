@@ -1,7 +1,7 @@
 {
   "name": "relayprobe",
   "version": "0.0.1",
-  "description": "Audit OpenAI-compatible relays for observable tampering, injection, and canary leakage evidence.",
+  "description": "Evidence-driven GPT-5.5 relay MITM audit console with canaries, response poisoning checks, tool-call integrity, and usage evidence.",
   "type": "module",
   "private": false,
   "license": "MIT",
@@ -12,13 +12,17 @@
     "security",
     "prompt-injection",
     "canary",
-    "audit"
+    "audit",
+    "mitm",
+    "tool-calls",
+    "gpt-5.5"
   ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit"
   },
@@ -47,6 +51,7 @@
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.7"
   }
 }
