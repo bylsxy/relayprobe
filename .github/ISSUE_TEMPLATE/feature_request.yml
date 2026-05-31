@@ -1,0 +1,30 @@
+name: Feature request
+description: Propose a new defensive relay audit capability.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What defensive audit gap should RelayProbe cover?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the probe, evidence, and false-positive controls.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety
+      options:
+        - label: The proposal uses synthetic data only.
+          required: true
+        - label: The proposal avoids offensive scanning or unauthorized reverse engineering.
+          required: true
+        - label: The proposal documents false-positive risks.
+          required: true
