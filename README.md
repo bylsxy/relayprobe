@@ -114,6 +114,7 @@ Many public relay checkers focus on model authenticity: "Is this really Claude/G
 - [Methodology](docs/methodology.md)
 - [False positives](docs/false-positives.md)
 - [Safe testing](docs/safe-testing.md)
+- [Governance](docs/governance.md)
 - [Security policy](SECURITY.md)
 - [Contributing](CONTRIBUTING.md)
 
