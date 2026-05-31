@@ -10,8 +10,12 @@ updates:
     open-pull-requests-limit: 5
     groups:
       production-dependencies:
+        patterns:
+          - "*"
         dependency-type: "production"
       development-dependencies:
+        patterns:
+          - "*"
         dependency-type: "development"
     commit-message:
       prefix: "deps"
